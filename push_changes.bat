@@ -1,7 +1,7 @@
 @echo off
 setlocal
 set "MSG=%*"
-if "%MSG%"=="" set "MSG=update: cambios rapidos"
+if "%MSG%"=="" set "MSG=update: cambios en cocteles"
 
 where git >nul 2>nul || (
   echo [ERROR] Git no esta instalado en el PATH.
@@ -10,15 +10,18 @@ where git >nul 2>nul || (
 )
 
 echo.
-echo === Añadiendo cambios ===
+echo === Añadiendo todos los cambios ===
 git add -A
+
 echo.
 echo === Commit ===
-git commit -m "%MSG%" || echo (nada que commitear)
+git commit -m "%MSG%" || echo (nada nuevo que commitear)
+
 echo.
-echo === Push ===
-git push
+echo === Push a GitHub ===
+git push origin main
+
 echo.
-echo Hecho.
+echo Cambios subidos a: https://nataliogc.github.io/menus-cocteles/
 pause
 endlocal
