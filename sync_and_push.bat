@@ -1,7 +1,7 @@
 @echo off
 setlocal
 set "MSG=%*"
-if "%MSG%"=="" set "MSG=update: cambios en cocteles"
+if "%MSG%"=="" set "MSG=update: sincroniza y sube"
 
 where git >nul 2>nul || (
   echo [ERROR] Git no esta instalado en el PATH.
@@ -9,7 +9,6 @@ where git >nul 2>nul || (
   exit /b 1
 )
 
-echo === Verificando rama 'main' ===
 git rev-parse --verify main >nul 2>nul
 if errorlevel 1 ( git checkout -b main ) else ( git checkout main )
 
@@ -19,11 +18,10 @@ git fetch origin
 git pull --rebase origin main
 if errorlevel 1 (
   echo.
-  echo [AVISO] Hubo conflictos o error al rebasar.
-  echo - Si hay conflictos, resuelvelos en tus archivos y ejecuta:
+  echo [AVISO] Hay conflictos. Resuelvelos y luego:
   echo     git add -A
   echo     git rebase --continue
-  echo - Luego vuelve a ejecutar este .bat
+  echo y ejecuta este .bat de nuevo.
   pause
   exit /b 1
 )
@@ -39,14 +37,8 @@ git commit -m "%MSG%" || echo (nada nuevo que commitear)
 echo.
 echo === Push ===
 git push origin main
-if errorlevel 1 (
-  echo.
-  echo [ERROR] No se pudo hacer push. Revisa el mensaje anterior.
-  pause
-  exit /b 1
-)
 
 echo.
-echo OK ✓ Cambios publicados: https://nataliogc.github.io/menus-cocteles/
+echo OK ✓ Publicado: https://nataliogc.github.io/menus-cocteles/
 pause
 endlocal
